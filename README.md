@@ -2,7 +2,7 @@
 
 An advanced system that uses computer vision and machine learning to analyze programming code screenshots and provide automated code quality assessment with educational feedback.
 
-## 🌟 Features
+## 🌟 Features [![Python application](https://github.com/charlieijk/CodeQualityAssessment/actions/workflows/python-app.yml/badge.svg)](https://github.com/charlieijk/CodeQualityAssessment/actions/workflows/python-app.yml)
 
 - **📸 Image OCR Processing**: Upload screenshots of code for automatic text extraction using OpenCV and Tesseract
 - **🤖 ML-Powered Analysis**: Automated detection of code quality issues using custom algorithms
