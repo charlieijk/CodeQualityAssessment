@@ -209,6 +209,8 @@ class CodeQualityAnalyzer:
 
         # Base score starts at 100, subtract penalties
         score = max(0, 100 - (total_penalty * 2))
+        if any(issue.issue_type == 'syntax_error' for issue in issues):
+            score = min(score, 40.0)
         return round(score, 1)
 
     def _get_severity_breakdown(self, issues: List[QualityIssue]) -> Dict[str, int]:

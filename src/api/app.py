@@ -131,7 +131,7 @@ def analyze_text_directly():
     Endpoint to analyze code quality from direct text input
     """
     try:
-        data = request.get_json()
+        data = request.get_json(silent=True)
         if not data or 'code' not in data:
             return jsonify({'error': 'No code text provided'}), 400
 

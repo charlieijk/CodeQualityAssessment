@@ -182,6 +182,22 @@ python -m pytest tests/ -v
 python -m pytest tests/ --cov=src --cov-report=html
 ```
 
+## 🤖 ML Training Pipeline
+
+Weak labels are produced by the same analyzers that power the API. You can use them to bootstrap machine-learning models that generalize beyond the heuristic rules:
+
+1. **Generate a dataset** from any Python repositories and optional screenshots:
+   ```bash
+   python -m src.data_pipeline.dataset_builder --code-dirs src tests --output data/processed/dataset.jsonl
+   ```
+   This writes JSONL samples (one per snippet) under `data/processed/` with issue-level annotations.
+2. **Train the baseline quality model** (requires the optional ML dependencies from `requirements-ml-optional.txt`):
+   ```bash
+   python -m src.models.baseline_trainer --dataset data/processed/dataset.jsonl --model-dir data/processed/models
+   ```
+   The trainer reports mean absolute error for the quality score and micro-F1 for multi-label issue detection, then exports a reusable `baseline_quality_model.joblib`.
+3. **Learn more**: `docs/ML_PIPELINE.md` covers environment setup, dataset schema, trainer outputs, and ideas for extending the pipeline.
+
 ## 📁 Project Structure
 
 ```
