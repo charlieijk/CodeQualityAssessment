@@ -22,9 +22,10 @@ An advanced system that uses computer vision and machine learning to analyze pro
 
 ## 📋 Prerequisites
 
-- Python 3.8 or higher
+- Python 3.8 or higher (3.10–3.11 recommended for full ML stack)
 - Tesseract OCR engine
 - Git
+- Optional ML dependencies (PyTorch, TensorFlow, spaCy, etc.) currently publish wheels only for Python < 3.12. Install them with `pip install -r requirements-ml-optional.txt` inside a Python 3.11 virtualenv if you need those advanced features.
 
 ### Installing Tesseract OCR
 
@@ -60,6 +61,8 @@ source venv/bin/activate  # On Windows: venv\Scripts\activate
 ```bash
 pip install -r requirements.txt
 ```
+   - (Optional) Install developer tools with `pip install -r requirements-dev.txt` if you have network access.
+   - (Optional) Install the heavy ML stack with `pip install -r requirements-ml-optional.txt` when using Python 3.11.
 
 4. **Run the application:**
 ```bash
