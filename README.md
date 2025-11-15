@@ -71,6 +71,28 @@ python run.py
 http://localhost:5000
 ```
 
+## 🧠 Running in Jupyter Notebook
+
+1. **Launch Jupyter from the project root** so the relative imports keep working:
+   ```bash
+   cd CodeQualityAssessment
+   jupyter lab          # or: jupyter notebook
+   ```
+2. **Install dependencies inside the notebook kernel** (Tesseract still needs to be installed system-wide via Homebrew/apt/Windows installer):
+   ```python
+   %pip install -r requirements.txt
+   ```
+3. **Open `run.ipynb` and execute the server cell** (the one containing the former `run.py` entry point). Keep that cell running while you test; stop it via the red ■ button or `Kernel → Interrupt` when you want to shut the server down.
+4. **Optional background run:** if you need the server detached from the main kernel, convert the notebook once and launch it in a background bash cell:
+   ```python
+   !jupyter nbconvert --to python run.ipynb
+
+   %%bash --bg
+   source venv/bin/activate
+   python run.py --host 127.0.0.1 --port 5000
+   ```
+   (Use the printed URL to access the app, and stop the background job with `jobs`/`kill` in the same notebook.)
+
 ## 📖 Usage
 
 ### Web Interface
