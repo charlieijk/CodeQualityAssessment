@@ -1,0 +1,18 @@
+# Hugging Face Spaces requirements (lightweight version)
+# This excludes heavy ML dependencies to keep the Space lightweight
+
+# Web frameworks
+Flask==3.0.0
+Flask-CORS==4.0.0
+gradio>=4.0.0
+Werkzeug==3.0.1
+
+# Computer vision and OCR
+opencv-python-headless==4.8.1.78
+pytesseract==0.3.10
+Pillow==10.1.0
+numpy==1.24.3
+
+# For basic ML support (optional - comment out if too heavy)
+# scikit-learn==1.3.2
+# joblib==1.3.2

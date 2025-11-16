@@ -1,0 +1,8 @@
+# Hugging Face Spaces Configuration
+sdk: docker
+app_port: 7860
+emoji: 🔍
+colorFrom: blue
+colorTo: purple
+title: Code Quality Assessment
+short_description: AI-powered code quality analysis with computer vision
