@@ -1,3 +1,20 @@
+---
+license: mit
+tags:
+- code-quality
+- computer-vision
+- ocr
+- machine-learning
+- education
+- python
+- code-analysis
+- deep-learning
+language:
+- en
+library_name: transformers
+pipeline_tag: text-classification
+---
+
 # 🔍 Computer Vision Code Quality Assessment
 
 An advanced system that uses computer vision and machine learning to analyze programming code screenshots and provide automated code quality assessment with educational feedback.
@@ -5,18 +22,25 @@ An advanced system that uses computer vision and machine learning to analyze pro
 ## 🌟 Features
 
 - **📸 Image OCR Processing**: Upload screenshots of code for automatic text extraction using OpenCV and Tesseract
-- **🤖 ML-Powered Analysis**: Automated detection of code quality issues using custom algorithms
+- **🤖 Advanced ML Models**: State-of-the-art transformer models (CodeBERT, GraphCodeBERT) for deep code understanding
+- **🎯 Multi-Task Learning**: Simultaneous quality scoring and issue detection with attention mechanisms
+- **📊 Hybrid Analysis**: Combines rule-based heuristics with deep learning for robust predictions
 - **📚 Educational Feedback**: Constructive suggestions and learning paths for code improvement
 - **🌐 Web Interface**: User-friendly Flask web application with drag-and-drop functionality
 - **🔗 RESTful API**: Complete API for integration with other tools and services
+- **👁️ Attention Visualization**: Understand which code parts affect quality predictions
 - **⚡ Real-time Analysis**: Instant quality assessment with detailed reporting
+- **🔄 Fine-tuning Support**: Train custom models on your own code datasets
 
 ## 🛠️ Technical Stack
 
 - **Computer Vision**: OpenCV, Tesseract OCR, PIL/Pillow
-- **Machine Learning**: TensorFlow, PyTorch, scikit-learn
+- **Deep Learning**: PyTorch, Transformers (HuggingFace)
+- **Transformer Models**: CodeBERT, GraphCodeBERT for code understanding
+- **Machine Learning**: scikit-learn, TensorFlow (optional)
 - **Web Framework**: Flask, Flask-CORS
 - **Frontend**: HTML5, CSS3, JavaScript
+- **Visualization**: Matplotlib, Seaborn for attention heatmaps
 - **Image Processing**: Advanced preprocessing pipeline for better OCR accuracy
 - **Text Analysis**: NLTK, spaCy for code pattern recognition
 
@@ -182,21 +206,104 @@ python -m pytest tests/ -v
 python -m pytest tests/ --cov=src --cov-report=html
 ```
 
-## 🤖 ML Training Pipeline
+## 🤖 Advanced ML Models
 
-Weak labels are produced by the same analyzers that power the API. You can use them to bootstrap machine-learning models that generalize beyond the heuristic rules:
+This system supports three levels of code quality analysis:
 
-1. **Generate a dataset** from any Python repositories and optional screenshots:
-   ```bash
-   python -m src.data_pipeline.dataset_builder --code-dirs src tests --output data/processed/dataset.jsonl
-   ```
-   This writes JSONL samples (one per snippet) under `data/processed/` with issue-level annotations.
-2. **Train the baseline quality model** (requires the optional ML dependencies from `requirements-ml-optional.txt`):
-   ```bash
-   python -m src.models.baseline_trainer --dataset data/processed/dataset.jsonl --model-dir data/processed/models
-   ```
-   The trainer reports mean absolute error for the quality score and micro-F1 for multi-label issue detection, then exports a reusable `baseline_quality_model.joblib`.
-3. **Learn more**: `docs/ML_PIPELINE.md` covers environment setup, dataset schema, trainer outputs, and ideas for extending the pipeline.
+### 1. Rule-Based Analysis (Default)
+Fast, lightweight analysis using heuristics and AST parsing. No ML dependencies required.
+
+### 2. Baseline ML Model
+TF-IDF + scikit-learn models for improved accuracy.
+
+**Training:**
+```bash
+# Generate dataset
+python -m src.data_pipeline.dataset_builder --code-dirs src tests --output data/processed/dataset.jsonl
+
+# Train baseline model
+python -m src.models.baseline_trainer --dataset data/processed/dataset.jsonl --model-dir data/processed/models
+```
+
+### 3. Transformer Models (CodeBERT/GraphCodeBERT) 🚀
+
+State-of-the-art deep learning models for code understanding with attention mechanisms.
+
+**Features:**
+- **Multi-task learning**: Simultaneous quality scoring + issue detection
+- **Attention visualization**: See which code parts affect predictions
+- **Transfer learning**: Fine-tune on your specific codebase
+- **Ensemble strategies**: Combine with rule-based analysis
+
+**Training:**
+```bash
+# Install transformer dependencies (Python 3.11 recommended)
+pip install -r requirements-ml-optional.txt
+
+# Generate training dataset
+python -m src.data_pipeline.dataset_builder \
+  --code-dirs src tests \
+  --output data/processed/dataset.jsonl \
+  --limit 1000
+
+# Train transformer model
+python -m src.models.train_transformer \
+  --dataset data/processed/dataset.jsonl \
+  --model-name microsoft/codebert-base \
+  --output-dir data/processed/transformer_models \
+  --num-epochs 10 \
+  --batch-size 16
+```
+
+**Available Models:**
+- `microsoft/codebert-base` - General purpose code model
+- `microsoft/graphcodebert-base` - Graph-aware code model
+- `huggingface/CodeBERTa-small-v1` - Smaller, faster variant
+
+**Using Advanced API:**
+```bash
+# Run with ML support
+python src/api/app_advanced.py
+```
+
+**API Strategies:**
+- `rule_only`: Traditional heuristic analysis
+- `ml_only`: Pure ML predictions
+- `weighted_average`: Combine rule-based (30%) + ML (70%)
+- `ml_override`: ML score with detailed rule-based issues
+
+**Example API Request:**
+```bash
+curl -X POST http://localhost:5000/api/analyze-text \
+  -H "Content-Type: application/json" \
+  -d '{
+    "code": "def hello():\n    print(\"Hello\")",
+    "strategy": "weighted_average",
+    "return_attention": true
+  }'
+```
+
+**Attention Visualization:**
+```python
+from src.utils.attention_viz import AttentionVisualizer
+from src.models.transformer_model import TransformerQualityTrainer
+
+# Load model
+trainer = TransformerQualityTrainer.load("data/processed/transformer_models")
+
+# Get predictions with attention
+predictions = trainer.predict(["def hello():\n    print('hi')"], return_attention=True)
+
+# Visualize
+viz = AttentionVisualizer(trainer.tokenizer)
+viz.visualize_cls_attention(
+    "def hello():\n    print('hi')",
+    predictions['attention_weights'][0],
+    save_path="attention.png"
+)
+```
+
+**Learn more**: `docs/ML_PIPELINE.md` covers dataset schema, training details, and extending the pipeline.
 
 ## 📁 Project Structure
 
