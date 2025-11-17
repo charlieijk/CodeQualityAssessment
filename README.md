@@ -1,4 +1,10 @@
 ---
+title: Code Quality Assessment
+emoji: 🔍
+colorFrom: blue
+colorTo: purple
+sdk: docker
+app_port: 7860
 license: mit
 tags:
 - code-quality
@@ -9,10 +15,12 @@ tags:
 - python
 - code-analysis
 - deep-learning
+- gradio
 language:
 - en
 library_name: transformers
 pipeline_tag: text-classification
+short_description: AI-powered code quality analysis with computer vision
 ---
 
 # 🔍 Computer Vision Code Quality Assessment
@@ -68,6 +76,29 @@ sudo apt install tesseract-ocr
 Download and install from: https://github.com/UB-Mannheim/tesseract/wiki
 
 ## 🚀 Quick Start
+
+### Web Interface (Gradio)
+
+**Try it live on Hugging Face Spaces**: [Code Quality Assessment Space](https://huggingface.co/spaces/charlieijk/code-quality-assessment)
+
+**Run locally:**
+
+```bash
+# Basic interface (code analysis only)
+pip install -r requirements.txt
+python gradio_app.py
+
+# Advanced interface (with model parameters & fine-tuning)
+pip install -r requirements-ml-optional.txt
+python gradio_app_advanced.py
+
+# Smart launcher (auto-detects available features)
+python launch_gradio.py
+```
+
+Open your browser: http://localhost:7860
+
+### Flask API
 
 1. **Clone the repository:**
 ```bash

@@ -8,8 +8,9 @@ WORKDIR /app
 RUN apt-get update && apt-get install -y \
     tesseract-ocr \
     tesseract-ocr-eng \
-    libgl1-mesa-glx \
+    libgl1 \
     libglib2.0-0 \
+    libgomp1 \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy requirements
@@ -33,5 +34,5 @@ ENV PYTHONUNBUFFERED=1
 # Expose port
 EXPOSE 7860
 
-# Run the application
-CMD ["python", "app.py"]
+# Run the Gradio application
+CMD ["python", "gradio_app.py"]

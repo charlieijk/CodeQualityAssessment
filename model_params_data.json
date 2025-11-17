@@ -1,0 +1,51 @@
+{
+  "microsoft/codebert-base": {
+    "total_params": 124439808,
+    "trainable_params": 124439808,
+    "frozen_params": 0,
+    "total_size_mb": 474.37,
+    "param_breakdown": {
+      "embeddings": 38297088,
+      "encoder": 85054464,
+      "pooler": 590592
+    },
+    "description": "General-purpose code understanding model based on RoBERTa",
+    "architecture": "12-layer, 768-hidden, 12-heads"
+  },
+  "microsoft/graphcodebert-base": {
+    "total_params": 124439808,
+    "trainable_params": 124439808,
+    "frozen_params": 0,
+    "total_size_mb": 474.37,
+    "param_breakdown": {
+      "embeddings": 38297088,
+      "encoder": 85054464,
+      "pooler": 590592
+    },
+    "description": "Graph-aware code model with data flow understanding",
+    "architecture": "12-layer, 768-hidden, 12-heads"
+  },
+  "huggingface/CodeBERTa-small-v1": {
+    "total_params": 84095008,
+    "trainable_params": 84095008,
+    "frozen_params": 0,
+    "total_size_mb": 320.86,
+    "param_breakdown": {
+      "embeddings": 25688576,
+      "encoder": 57816576,
+      "pooler": 590592
+    },
+    "description": "Smaller, faster variant of CodeBERT",
+    "architecture": "12-layer, 768-hidden, 12-heads"
+  },
+  "multi_task_additions": {
+    "quality_head": {
+      "params": 769,
+      "description": "Linear regression head for quality score prediction"
+    },
+    "issue_classification_head_per_issue": {
+      "params": 769,
+      "description": "Binary classification head per issue type"
+    }
+  }
+}
