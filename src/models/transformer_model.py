@@ -196,6 +196,62 @@ class MultiTaskCodeQualityModel(nn.Module):
             for param in module.parameters():
                 param.requires_grad = False
 
+    def count_parameters(self) -> Dict[str, int]:
+        """
+        Count model parameters by component.
+
+        Returns:
+            Dictionary with parameter counts for each component
+        """
+        encoder_params = sum(p.numel() for p in self.encoder.parameters())
+        encoder_trainable = sum(p.numel() for p in self.encoder.parameters() if p.requires_grad)
+
+        regressor_params = sum(p.numel() for p in self.quality_regressor.parameters())
+        classifier_params = sum(p.numel() for p in self.issue_classifier.parameters())
+
+        total_params = sum(p.numel() for p in self.parameters())
+        trainable_params = sum(p.numel() for p in self.parameters() if p.requires_grad)
+
+        return {
+            "total": total_params,
+            "trainable": trainable_params,
+            "frozen": total_params - trainable_params,
+            "encoder": encoder_params,
+            "encoder_trainable": encoder_trainable,
+            "encoder_frozen": encoder_params - encoder_trainable,
+            "quality_regressor": regressor_params,
+            "issue_classifier": classifier_params,
+        }
+
+    def print_parameter_summary(self):
+        """Print a formatted summary of model parameters."""
+        params = self.count_parameters()
+
+        print("\n" + "="*70)
+        print("MULTI-TASK CODE QUALITY MODEL - PARAMETER SUMMARY")
+        print("="*70)
+
+        def format_num(num: int) -> str:
+            if num >= 1_000_000:
+                return f"{num/1_000_000:.2f}M ({num:,})"
+            elif num >= 1_000:
+                return f"{num/1_000:.2f}K ({num:,})"
+            return f"{num:,}"
+
+        print(f"\n{'Component':<35} {'Parameters':>20} {'%':>10}")
+        print("-"*70)
+        print(f"{'Total Parameters:':<35} {format_num(params['total']):>20} {'100.00%':>10}")
+        print(f"{'  └─ Trainable:':<35} {format_num(params['trainable']):>20} {params['trainable']/params['total']*100:>9.2f}%")
+        print(f"{'  └─ Frozen:':<35} {format_num(params['frozen']):>20} {params['frozen']/params['total']*100:>9.2f}%")
+        print()
+        print(f"{'Encoder (Transformer):':<35} {format_num(params['encoder']):>20} {params['encoder']/params['total']*100:>9.2f}%")
+        print(f"{'  └─ Trainable:':<35} {format_num(params['encoder_trainable']):>20} {params['encoder_trainable']/params['total']*100:>9.2f}%")
+        print(f"{'  └─ Frozen:':<35} {format_num(params['encoder_frozen']):>20} {params['encoder_frozen']/params['total']*100:>9.2f}%")
+        print()
+        print(f"{'Quality Regressor Head:':<35} {format_num(params['quality_regressor']):>20} {params['quality_regressor']/params['total']*100:>9.2f}%")
+        print(f"{'Issue Classifier Head:':<35} {format_num(params['issue_classifier']):>20} {params['issue_classifier']/params['total']*100:>9.2f}%")
+        print("="*70 + "\n")
+
 
 class TransformerQualityTrainer:
     """Trainer for transformer-based code quality models."""

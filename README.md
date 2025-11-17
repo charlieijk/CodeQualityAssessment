@@ -303,7 +303,21 @@ viz.visualize_cls_attention(
 )
 ```
 
-**Learn more**: `docs/ML_PIPELINE.md` covers dataset schema, training details, and extending the pipeline.
+**Model Parameter Analysis:**
+```bash
+# Analyze base transformer model parameters
+python scripts/analyze_model_params.py --model microsoft/codebert-base
+
+# Analyze full multi-task model with custom heads
+python scripts/analyze_model_params.py --model microsoft/codebert-base --with-heads --num-issues 15
+
+# Compare different architectures
+python scripts/analyze_model_params.py --compare microsoft/codebert-base microsoft/graphcodebert-base
+```
+
+**Learn more**:
+- `docs/ML_PIPELINE.md` covers dataset schema, training details, and extending the pipeline
+- `docs/MODEL_PARAMETERS.md` explains parameter analysis and model optimization strategies
 
 ## 📁 Project Structure
 
